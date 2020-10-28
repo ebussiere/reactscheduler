@@ -1,0 +1,30 @@
+import React from 'react';
+import 'components/InterviewerList/InterviewerList.scss';
+import InterviewerListItem from 'components/InterviewerListItem/InterviewerListItem';
+const classNames = require('classnames');
+
+export default function InterviewerList(props) {
+  const allProps = [...props.interviewers];
+  const interviewerListClass = classNames('interviewers__list', {
+    'interviewers__item--selected': props.selected,
+  });
+  return (
+    <section className='interviewers'>
+      <h4 className='interviewers__header text--light'>Interviewer</h4>
+      <ul className={interviewerListClass}>
+        {allProps.map((interviewerListItem) => (
+          <InterviewerListItem
+            key={interviewerListItem.id}
+            name={interviewerListItem.name}
+            avatar={interviewerListItem.avatar}
+            interviewer={props.interviewer}
+            selected={interviewerListItem.id === props.interviewer.id}
+            setInterviewer={(event) =>
+              props.setInterviewer(interviewerListItem)
+            }
+          />
+        ))}
+      </ul>
+    </section>
+  );
+}
