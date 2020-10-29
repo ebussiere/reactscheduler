@@ -8,6 +8,7 @@ export default function InterviewerList(props) {
   const interviewerListClass = classNames('interviewers__list', {
     'interviewers__item--selected': props.selected,
   });
+  console.log(props.value);
   return (
     <section className='interviewers'>
       <h4 className='interviewers__header text--light'>Interviewer</h4>
@@ -18,10 +19,8 @@ export default function InterviewerList(props) {
             name={interviewerListItem.name}
             avatar={interviewerListItem.avatar}
             interviewer={props.interviewer}
-            selected={interviewerListItem.id === props.interviewer.id}
-            setInterviewer={(event) =>
-              props.setInterviewer(interviewerListItem)
-            }
+            selected={interviewerListItem.id === props.value}
+            setInterviewer={(event) => props.onChange(interviewerListItem.id)}
           />
         ))}
       </ul>

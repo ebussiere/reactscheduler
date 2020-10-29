@@ -10,7 +10,7 @@ import DayListItem from 'components/DayListItem/DayListItem';
 import DayList from 'components/DayList/DayList';
 import InterviewerListItem from 'components/InterviewerListItem/InterviewerListItem';
 import InterviewerList from 'components/InterviewerList/InterviewerList';
-import Appointment from 'components/Appointment/index';
+import Appointment from 'components/Appointment/Appointment';
 import Header from 'components/Appointment/Header';
 import Empty from 'components/Appointment/Empty';
 import Show from 'components/Appointment/Show';
@@ -69,10 +69,10 @@ storiesOf('DayList', module)
     backgrounds: [{ name: 'dark', value: '#222f3e', default: true }],
   })
   .add('Monday', () => (
-    <DayList days={days} day={'Monday'} setDay={action('setDay')} />
+    <DayList days={days} value={'Monday'} onChange={action('setDay')} />
   ))
   .add('Tuesday', () => (
-    <DayList days={days} day={'Tuesday'} setDay={action('setDay')} />
+    <DayList days={days} value={'Tuesday'} onChange={action('setDay')} />
   ));
 
 const interviewer = {
@@ -124,14 +124,14 @@ storiesOf('InterviewerList', module)
   .add('Initial', () => (
     <InterviewerList
       interviewers={interviewers}
-      setInterviewer={(event) => action('setInterviewer')(interviewer.id)}
+      onChange={(event) => action('setInterviewer')(interviewer.id)}
     />
   ))
   .add('Preselected', () => (
     <InterviewerList
       interviewers={interviewers}
-      interviewer={3}
-      setInterviewer={(event) => action('setInterviewer')(interviewer.id)}
+      value={3}
+      onChange={(event) => action('setInterviewer')(interviewer.id)}
     />
   ));
 
