@@ -3,6 +3,7 @@ import axios from 'axios';
 import 'components/Application.scss';
 import DayList from './DayList/DayList';
 import AppointmentList from './AppointmentList/AppointmentList';
+import { getAppointmentsForDay } from '../helpers/selectors';
 
 const appointments = [
   {
@@ -63,7 +64,7 @@ const appointments = [
   },
 ];
 
-let seedDays = [
+let seeddays = [
   {
     id: 1,
     name: 'Monday',
@@ -92,23 +93,32 @@ let seedDays = [
 ];
 
 export default function Application(props) {
-  const [day, setDay] = useState(1);
-  const [days, setDays] = useState([]);
+  const [state, setState] = useState({
+    day: 'Monday',
+    days: [],
+    // you may put the line below, but will have to remove/comment hardcoded appointments variable
+    appointments: [],
+  });
+  const dailyAppointments = [];
+  const setDay = (day) => setState({ ...state, day });
+  useEffect(() => {
+    Promise.all([axios.get('/api/days'), axios.get('/api/appointments')]).then(
+      (all) => {
+        setState((prev) => ({
+          ...prev,
+          days: all[0].data,
+          appointments: all[1].data,
+        }));
+      },
+    );
+  }, []);
 
   useEffect(() => {
-    axios
-      .get('/api/days')
-      .then((response) => {
-        setDays(response.data);
-      })
-      // .then((response) => {
-      //   console.log('response', response.data);
-      // })
-      // .then((response) => {
-      //   console.log('seedDays', seedDays);
-      // })
-      .catch((err) => console.log(err));
-  }, []);
+    setState((prev) => ({
+      ...prev,
+      appointments: getAppointmentsForDay(state, state.day),
+    }));
+  }, [state.day]);
 
   return (
     <main className='layout'>
@@ -120,7 +130,7 @@ export default function Application(props) {
         />
         <hr className='sidebar__separator sidebar--centered' />
         <nav className='sidebar__menu'>
-          <DayList days={days} value={day} onChange={setDay} />
+          <DayList days={state.days} value={state.day} onChange={setDay} />
         </nav>
         <img
           className='sidebar__lhl sidebar--centered'

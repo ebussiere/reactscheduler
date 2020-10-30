@@ -1,16 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
 import Appointment from 'components/Appointment/index';
 
 export default function AppointmentList(props) {
-  const [appointments, setAppointments] = useState(props.appointments);
-  ///console.log(props);
-
-  // axios.get('/api/appointments').then((response) => {
-  //   console.log(response);
-  // });
-
-  const AppontmentItems = props.appointments.map((appointment) => (
+  const AppointmentItems = props.appointments.map((appointment) => (
     <Appointment
       key={appointment.id}
       id={appointment.id}
@@ -18,5 +10,5 @@ export default function AppointmentList(props) {
       interview={appointment.interview}
     />
   ));
-  return <ul>{AppontmentItems}</ul>;
+  return <ul>{AppointmentItems}</ul>;
 }
