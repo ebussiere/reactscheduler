@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import InterviewerList from '../InterviewerList/InterviewerList';
 import Button from '../Button/Button';
+import useVisualMode from '../../hooks/useVisualMode';
 const classNames = require('classnames');
 
 export default function Form(props) {
@@ -13,12 +14,11 @@ export default function Form(props) {
   const reset = function () {
     setInterviewer(null);
   };
-
-  const onclick = function (event) {
-    props.onSave();
-    props.onCancel();
+  const onSave = function () {
+    props.bookInterview(props.id);
+    props.save(name, interviewer);
   };
-
+  //console.log(props.id);
   return (
     <main className={formClass}>
       <section className='appointment__card-left'>
@@ -45,7 +45,7 @@ export default function Form(props) {
           <Button danger onClick={props.onCancel}>
             Cancel
           </Button>
-          <Button confirm onClick={onclick}>
+          <Button confirm onClick={() => onSave()}>
             Save
           </Button>
         </section>

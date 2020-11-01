@@ -5,10 +5,11 @@ const classNames = require('classnames');
 
 export default function InterviewerList(props) {
   const allProps = [...props.interviewers];
+  //const allProps = [];
+
   const interviewerListClass = classNames('interviewers__list', {
     'interviewers__item--selected': props.selected,
   });
-  console.log(props.value);
   return (
     <section className='interviewers'>
       <h4 className='interviewers__header text--light'>Interviewer</h4>
