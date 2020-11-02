@@ -1,16 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Appointment from 'components/Appointment/index';
 
 export default function AppointmentList(props) {
-  function save(name, interviewer) {
-    //console.log('saving');
-    console.log(props.id);
-    //console.log(name, interviewer);
-    const interview = {
-      student: name,
-      interviewer,
-    };
-    props.bookInterview(interview);
+  function onSave(id, interview) {
+    props.bookInterview(id, interview);
   }
 
   const AppointmentItems = props.appointments.map((appointment) => (
@@ -21,7 +14,7 @@ export default function AppointmentList(props) {
       interview={appointment.interview}
       interviewers={props.interviewers}
       bookInterview={props.bookInterview}
-      save={save}
+      onSave={onSave}
     />
   ));
   return <ul>{AppointmentItems}</ul>;

@@ -1,8 +1,6 @@
 import React, { Fragment } from 'react';
-
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-
 import 'index.scss';
 
 import Button from 'components/Button/Button';
@@ -10,7 +8,7 @@ import DayListItem from 'components/DayListItem/DayListItem';
 import DayList from 'components/DayList/DayList';
 import InterviewerListItem from 'components/InterviewerListItem/InterviewerListItem';
 import InterviewerList from 'components/InterviewerList/InterviewerList';
-import Appointment from 'components/Appointment/Appointment';
+
 import Header from 'components/Appointment/Header';
 import Empty from 'components/Appointment/Empty';
 import Show from 'components/Appointment/Show';
