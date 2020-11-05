@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import 'components/Application.scss';
 import DayList from './DayList/DayList';
 import Appointment from 'components/Appointment/index';
@@ -52,7 +52,10 @@ export default function Application(props) {
           alt='Lighthouse Labs'
         />
       </section>
-      <section className='schedule'>{appointments}</section>
+      <section className='schedule'>
+        {appointments}
+        <Appointment id='last' time='5pm' />
+      </section>
     </main>
   );
 }

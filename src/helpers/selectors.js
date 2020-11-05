@@ -6,12 +6,9 @@ export function getAppointmentsForDay(state, day) {
   if (!state.days.find((d) => d.name === day)) {
     return result;
   }
-
   if (state.days.length > 0) {
     let filteredDay = state.days.filter((d) => d.name === day);
-
     const appointmentIdsToSearch = filteredDay[0]['appointments'];
-
     for (let i = 0; i < appointmentIdsToSearch.length; i++) {
       for (const apptId in appointments) {
         if (appointments.hasOwnProperty(apptId)) {

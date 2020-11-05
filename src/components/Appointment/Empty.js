@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import useVisualMode from '../../hooks/useVisualMode';
+import React from 'react';
+//import useVisualMode from '../../hooks/useVisualMode';
 export default function Empty(props) {
   return (
     <main className='appointment__add'>
@@ -8,6 +8,7 @@ export default function Empty(props) {
         src='images/add.png'
         alt='Add'
         onClick={props.onAdd}
+        data-testid='add-appointment'
       />
     </main>
   );

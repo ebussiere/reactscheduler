@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Appointment from 'components/Appointment/index';
 
 export default function AppointmentList(props) {

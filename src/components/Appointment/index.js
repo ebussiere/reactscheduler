@@ -26,6 +26,7 @@ export default function Appointment(props) {
   );
 
   function onSave(name, interviewer) {
+    statusMessage = 'Saving';
     transition(STATUS);
     const interview = {
       student: name,
@@ -53,9 +54,7 @@ export default function Appointment(props) {
     statusMessage = 'Deleting';
     transition(STATUS);
     //after successful delete
-
     const sp = props.cancelInterview(id);
-
     sp.then((result) => {
       transition(EMPTY);
       return result;
@@ -80,7 +79,7 @@ export default function Appointment(props) {
   };
 
   return (
-    <>
+    <article className='appointment' data-testid='appointment'>
       <Header time={props.time} />
       {mode === EMPTY && <Empty onAdd={() => onCreate()} />}
       {mode === SHOW && (
@@ -104,6 +103,6 @@ export default function Appointment(props) {
       {mode === ERROR_DELETE && (
         <Error message={'Could not delete'} back={() => back()} />
       )}
-    </>
+    </article>
   );
 }
