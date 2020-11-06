@@ -6,7 +6,7 @@ export default function Empty(props) {
       <img
         className='appointment__add-button'
         src='images/add.png'
-        alt='Add'
+        alt='add'
         onClick={props.onAdd}
         data-testid='add-appointment'
       />

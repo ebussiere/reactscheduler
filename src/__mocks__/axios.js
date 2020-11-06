@@ -1,6 +1,4 @@
-import React from 'react';
-import { render, cleanup, fireEvent } from '@testing-library/react';
-
+jest.mock('axios');
 const fixtures = {
   days: [
     {
@@ -80,6 +78,25 @@ export default {
         status: 200,
         statusText: 'OK',
         data: fixtures.interviewers,
+      });
+    }
+  }),
+
+  put: jest.fn((url) => {
+    const id = url[url.length - 1];
+    if (url === `/api/appointments/${id}`) {
+      return Promise.resolve({
+        status: 204,
+        statusText: 'No Content',
+      });
+    }
+  }),
+  delete: jest.fn((url) => {
+    const id = url[url.length - 1];
+    if (url === `/api/appointments/${id}`) {
+      return Promise.resolve({
+        status: 204,
+        statusText: 'No Content',
       });
     }
   }),

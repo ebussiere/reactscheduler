@@ -1,6 +1,5 @@
 export function getAppointmentsForDay(state, day) {
   const { appointments } = state;
-  //console.log(appointments);
 
   let result = [];
   if (!state.days.find((d) => d.name === day)) {
@@ -44,9 +43,7 @@ export function getInterviewersForDay(state, day) {
   }
   if (state.days.length > 0) {
     let filteredDay = state.days.filter((d) => d.name === day);
-
     const interviewerIdsToSearch = filteredDay[0]['interviewers'];
-
     for (let i = 0; i < interviewerIdsToSearch.length; i++) {
       for (const intId in interviewers) {
         if (interviewers.hasOwnProperty(intId)) {
@@ -57,7 +54,6 @@ export function getInterviewersForDay(state, day) {
         }
       }
     }
-
     return result;
   }
 }

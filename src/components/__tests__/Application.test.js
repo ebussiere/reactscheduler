@@ -1,4 +1,5 @@
 import React from 'react';
+import Application from '../application';
 
 import {
   render,
@@ -7,53 +8,53 @@ import {
   fireEvent,
   prettyDOM,
   getByText,
+  getByAltText,
+  getByPlaceholderText,
   getAllByTestId,
+  queryByText,
   getByTestId,
+  container,
 } from '@testing-library/react';
-
-import Application from 'components/application';
-
+jest.mock('axios');
 afterEach(cleanup);
+describe('Application', () => {
+  it('renders without crashing', () => {
+    render(<Application />);
+  });
 
-// it('renders without crashing', () => {
-//   render(<Application />);
-// });
+  //Promises
+  it('defaults to Monday and changes the schedule when a new day is selected', () => {
+    const { getByText } = render(<Application />);
+    return waitForElement(() => getByText('Monday')).then(() => {
+      fireEvent.click(getByText('Tuesday'));
+      expect(getByText('Leopold Silvers')).toBeInTheDocument();
+    });
+  });
 
-//Promises
-// it('defaults to Monday and changes the schedule when a new day is selected', () => {
-//   const { getByText } = render(<Application />);
+  it('loads data, books an interview and reduces the spots remaining for the first day by 1', async () => {
+    const { container, debug } = render(<Application />);
+    await waitForElement(() => getByText(container, 'Archie Cohen'));
+    // return waitForElement(() => getByText(container, 'Archie Cohen')).then(
+    //   () => {
+    const appointments = getAllByTestId(container, 'appointment');
+    const appointment = appointments[0];
+    fireEvent.click(getByAltText(appointment, 'add'));
 
-//   return waitForElement(() => getByText('Monday')).then(() => {
-//     fireEvent.click(getByText('Tuesday'));
-//     expect(getByText('Leopold Silvers')).toBeInTheDocument();
-//   });
-// });
+    fireEvent.change(getByPlaceholderText(appointment, /enter student name/i), {
+      target: { value: 'Lydia Miller-Jones' },
+    });
 
-//Async Await
-it('changes the schedule when a new day is selected', async () => {
-  const { getByText } = render(<Application />);
+    fireEvent.click(getByAltText(appointment, 'Sylvia Palmer'));
 
-  await waitForElement(() => getByText('Monday'));
+    fireEvent.click(getByText(appointment, 'Save'));
+    expect(getByText(appointment, 'Saving')).toBeInTheDocument();
 
-  fireEvent.click(getByText('Tuesday'));
-
-  expect(getByText('Leopold Silvers')).toBeInTheDocument();
-});
-
-it('loads data, books an interview and reduces the spots remaining for the first day by 1', async () => {
-  const { container, getByText } = render(<Application />);
-  await waitForElement(() => getByText('Monday'));
-  await waitForElement(() => getByText('Archie Cohen'));
-  fireEvent.click(getByText('Tuesday'));
-  const appointments = getAllByTestId(container, 'appointment');
-  console.log(prettyDOM(appointments));
-
-  const appointment = getAllByTestId(container, 'appointment')[0];
-  console.log(prettyDOM(appointment));
-
-  // console.log(prettyDOM(container));
-
-  // fireEvent.click(getByTestId('add-appointment'));
-
-  // expect(getByText('Leopold Silvers')).toBeInTheDocument();
+    //await waitForElement(() => getByText(appointment, 'Lydia Miller-Jones'));
+    debug();
+    // const days = getAllByTestId(container, 'day');
+    // const day = days[0];
+    // getByText(day, '1 spot remaining');
+    //},
+    //);
+  });
 });

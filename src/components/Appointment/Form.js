@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import InterviewerList from '../InterviewerList/InterviewerList';
 import Button from '../Button/Button';
+
 const classNames = require('classnames');
 
 export default function Form(props) {
-  const [name, setName] = useState(
-    props.interview ? props.interview.student : '',
-  );
-  const [interviewer, setInterviewer] = useState(
-    props.interview ? props.interview.interviewer.id : '',
-  );
+  const [name, setName] = useState(props.name || '');
+  const [interviewer, setInterviewer] = useState(props.interviewer || null);
+
   const [error, setError] = useState('');
   const formClass = classNames(
     'appointment__card',
@@ -21,17 +19,20 @@ export default function Form(props) {
       setError('Student name cannot be blank');
       return;
     }
+    if (interviewer === null) {
+      setError('Interviewer must be selected');
+      return;
+    }
     props.onSave(name, interviewer);
   }
+
   function onSave(name, interviewer) {
     validate();
   }
-
   useEffect(() => {
-    if (props.name && props.name !== '') {
-      setError('');
-    }
-  }, []);
+    setName(name);
+    setInterviewer(interviewer);
+  }, [name, interviewer]);
 
   return (
     <main className={formClass}>
@@ -40,7 +41,7 @@ export default function Form(props) {
           <input
             className='appointment__create-input text--semi-bold'
             name='name'
-            value={props.name}
+            value={name}
             type='text'
             placeholder='Enter Student Name'
             onChange={(event) => {

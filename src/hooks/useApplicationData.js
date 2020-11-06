@@ -1,10 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import 'components/Application.scss';
-//import DayList from './DayList/DayList';
-//import Appointment from 'components/Appointment/index';
 
-const useApplicationData = (initial) => {
+const useApplicationData = () => {
   const [state, setState] = useState({
     day: 'Monday',
     days: [],
@@ -13,6 +10,7 @@ const useApplicationData = (initial) => {
   });
 
   const setDay = (day) => setState({ ...state, day });
+
   function bookInterview(id, newInterview) {
     const dayUpdate = state.days.filter((day) => day['name'] === state.day)[0];
     const currentDaySpots = dayUpdate['spots'];
@@ -76,7 +74,6 @@ const useApplicationData = (initial) => {
         return Promise.reject(err);
       });
   }
-
   useEffect(() => {
     Promise.all([
       axios.get('/api/days'),
@@ -92,6 +89,12 @@ const useApplicationData = (initial) => {
     });
   }, []);
 
-  return { state, setDay, bookInterview, cancelInterview };
+  return {
+    state,
+    setDay,
+    bookInterview,
+    cancelInterview,
+  };
 };
+
 export default useApplicationData;

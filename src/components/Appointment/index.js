@@ -10,6 +10,7 @@ import useVisualMode from '../../hooks/useVisualMode';
 import 'components/Appointment/styles.scss';
 import Form from './Form';
 const EMPTY = 'EMPTY';
+const EDIT = 'EDIT';
 const SHOW = 'SHOW';
 const CREATE = 'CREATE';
 const STATUS = 'STATUS';
@@ -20,7 +21,10 @@ let statusMessage = 'Saving';
 let deleteMessage = 'Are you sure?';
 
 export default function Appointment(props) {
+  console.log(props);
+
   const [state, setState] = useState(props);
+
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY,
   );
@@ -32,25 +36,20 @@ export default function Appointment(props) {
       student: name,
       interviewer,
     };
-    const sp = props.bookInterview(props.id, interview);
-    sp.then((result) => {
-      transition(SHOW);
-      return result;
-    });
-    sp.catch((err) => {
-      transition(ERROR_SAVE, true);
-      return err;
-    });
+    console.log('props :', props);
+    props
+      .bookInterview(props.id, interview)
+      .then((result) => {
+        transition(SHOW);
+        //return result;
+      })
+      .catch((err) => {
+        transition(ERROR_SAVE, true);
+        return err;
+      });
   }
 
-  function onCancel() {
-    transition(CONFIRM);
-  }
-  function onFormCancel(name, interviewer) {
-    name && interviewer ? transition(SHOW) : back();
-  }
-
-  function onConfirm(id) {
+  function onConfirmDelete(id) {
     statusMessage = 'Deleting';
     transition(STATUS);
     //after successful delete
@@ -75,31 +74,65 @@ export default function Appointment(props) {
       interviewer: interviewer,
     };
     setState(state, interview);
-    transition(CREATE);
+    transition(EDIT);
+  };
+  const onDelete = function () {
+    transition(CONFIRM);
   };
 
   return (
     <article className='appointment' data-testid='appointment'>
       <Header time={props.time} />
+      {/* Empty Timeslot */}
       {mode === EMPTY && <Empty onAdd={() => onCreate()} />}
+      {/* Show Timeslot Data */}
       {mode === SHOW && (
-        <Show {...props} onEdit={onEdit} onCancel={() => onCancel()} />
+        <Show
+          student={props.interview.student}
+          interviewer={props.interview.interviewer}
+          onDelete={onDelete}
+          onEdit={onEdit}
+        />
       )}
+
+      {/* Create New Interview in empty timeslot uses Form */}
       {mode === CREATE && (
-        <Form {...props} onSave={onSave} onCancel={() => onFormCancel()} />
+        <Form
+          interviewers={props.interviewers}
+          onCancel={() => back()}
+          onSave={onSave}
+        />
       )}
+
+      {/* Modify Existing Interview in empty timeslot uses Form */}
+      {mode === EDIT && (
+        <Form
+          name={props.interview.student}
+          interviewers={props.interviewers}
+          interviewer={props.interview.interviewer.id}
+          onCancel={() => back()}
+          onSave={onSave}
+        />
+      )}
+
+      {/* Show Status passing appropriate message */}
       {mode === STATUS && <Status message={statusMessage} />}
+
+      {/* Confirm Delete Action */}
       {mode === CONFIRM && (
         <Confirm
-          onConfirm={onConfirm}
+          onConfirm={onConfirmDelete}
           id={props.id}
           back={() => back()}
           message={deleteMessage}
         />
       )}
+
+      {/* Show Save Error */}
       {mode === ERROR_SAVE && (
         <Error message={'Could not save'} back={() => back()} />
       )}
+      {/* Show Delete Error */}
       {mode === ERROR_DELETE && (
         <Error message={'Could not delete'} back={() => back()} />
       )}
