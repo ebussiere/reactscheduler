@@ -1,10 +1,10 @@
 import React from 'react';
 import 'components/DayListItem/DayListItem.scss';
-import '../application';
+import '../Application';
 const classNames = require('classnames');
 
 export default function DayListItem(props) {
-  const formatSpots = function (spots) {
+  const formatSpots = function(spots) {
     if (spots === 0) {
       return 'no spots remaining';
     } else if (spots === 1) {
