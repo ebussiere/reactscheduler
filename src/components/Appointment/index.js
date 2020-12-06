@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Empty from './Empty';
 import Show from './Show';
@@ -28,6 +27,16 @@ export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY,
   );
+
+  // useEffect(() => {
+  //   if (props.interview && mode === EMPTY) {
+  //     transition(SHOW);
+  //   }
+  //   // if (props.interview === null && mode === SHOW) {
+  //   //   transition(EMPTY);
+  //   // }
+  // }, [props.interview, transition, mode]);
+
 
   function onSave(name, interviewer) {
     statusMessage = 'Saving';
@@ -64,11 +73,11 @@ export default function Appointment(props) {
     });
   }
 
-  const onCreate = function () {
+  const onCreate = function() {
     transition(CREATE);
   };
 
-  const onEdit = function (name, interviewer) {
+  const onEdit = function(name, interviewer) {
     const interview = {
       student: name,
       interviewer: interviewer,
@@ -76,7 +85,7 @@ export default function Appointment(props) {
     setState(state, interview);
     transition(EDIT);
   };
-  const onDelete = function () {
+  const onDelete = function() {
     transition(CONFIRM);
   };
 
@@ -86,7 +95,7 @@ export default function Appointment(props) {
       {/* Empty Timeslot */}
       {mode === EMPTY && <Empty onAdd={() => onCreate()} />}
       {/* Show Timeslot Data */}
-      {mode === SHOW && (
+      {mode === SHOW && props.interview && (
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}

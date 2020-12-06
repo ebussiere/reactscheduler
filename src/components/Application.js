@@ -17,21 +17,23 @@ export default function Application(props) {
     bookInterview,
     cancelInterview,
   } = useApplicationData();
+
   const interviewers = getInterviewersForDay(state, state.day);
-  const appointments = getAppointmentsForDay(state, state.day).map(
-    (appointment) => {
-      return (
-        <Appointment
-          key={appointment.id}
-          {...appointment}
-          interview={getInterview(state, appointment.interview)}
-          interviewers={interviewers}
-          bookInterview={bookInterview}
-          cancelInterview={cancelInterview}
-        />
-      );
-    },
-  );
+  const appointments = getAppointmentsForDay(state, state.day);
+
+  const schedule = appointments.map(appointment => {
+    const interview = getInterview(state, appointment.interview);
+    return (
+      <Appointment
+        key={appointment.id}
+        {...appointment}
+        interview={interview}
+        interviewers={interviewers}
+        bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
+      />
+    );
+  });
 
   return (
     <main className='layout'>
@@ -52,7 +54,7 @@ export default function Application(props) {
         />
       </section>
       <section className='schedule'>
-        {appointments}
+        {schedule}
         <Appointment id='last' time='5pm' />
       </section>
     </main>
